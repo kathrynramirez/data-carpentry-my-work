@@ -152,7 +152,11 @@ practicedata_middle <- practicedata[n_rows / 2, ]
 practicedata_head <- practicedata[-(7:n_rows), ]
 
 
+#===========================================================================#
+
+
 # factors...
+
 
 # Factors represent categorical data. They are stored as integers associated 
 # with labels and they can be ordered or unordered. While factors look 
@@ -170,21 +174,80 @@ sex <- factor(c("male", "female", "female", "male"))
 # is "male"). You can see this by using the function levels() and you can 
 # find the number of levels using nlevels():
 
+levels(sex)
+# [1] "female" "male"
+nlevels(sex)
+# [1] 2
+
+
+# re-order levels
+
+sex #current order
+# [1] male   female female male  
+# Levels: female male
+
+sex <- factor(sex, levels = c("male", "female"))
+sex #after re-ordering
+# [1] male   female female male  
+# Levels: male female
 
 
 
+# converting factors
+# as.character(x) converts a factor to a character vector
+as.character(sex)
+#[1] "male"   "female" "female" "male"
+
+# In some cases, you may have to convert factors where the levels appear 
+# as numbers (such as concentration levels or years) to a numeric vector.
+# For instance, in one part of your analysis the years might need to be 
+# encoded as factors (e.g., comparing average weights across years) but 
+# in another part of your analysis they may need to be stored as numeric 
+# values (e.g., doing math operations on the years). This conversion from 
+# factor to numeric is a little trickier. The as.numeric() function returns 
+# the index values of the factor, not its levels, so it will result in an 
+# entirely new (and unwanted in this case) set of numbers. One method to 
+# avoid this is to convert factors to characters, and then to numbers.
+
+# Another method is to use the levels() function. Compare:
+
+year_fct <- factor(c(1990, 1983, 1977, 1998, 1990))
+as.numeric(year_fct) # wrong, there is no warning
+# [1] 3 2 1 4 3
+as.numeric(as.character(year_fct)) # works
+# [1] 1990 1983 1977 1998 1990
+as.numeric(levels(year_fct))[year_fct] # recommended
+# [1] 1990 1983 1977 1998 199
+
+plot(as.factor(practicedata$sex))
+# Error in plot.new() : figure margins too large
+# googled error
+par("mar")
+# [1] 5.1 4.1 4.1 2.1
+par(mar=c(1,1,1,1))
+
+plot(as.factor(practicedata$sex))
+# why isn't graph labeled??? bars are in correct length 
+
+plot(practicedata$sex)
+#Error in plot.window(...) : need finite 'ylim' values
+#In addition: Warning messages:
+#  1: In xy.coords(x, y, xlabel, ylabel, log) : NAs introduced by coercion
+#  2: In min(x) : no non-missing arguments to min; returning Inf
+#  3: In max(x) : no non-missing arguments to max; returning -Inf
+
+practicedata$sex <- factor(practicedata$sex)
+
+levels(practicedata$sex)
+practicedata$sex <- factor(practicedata$sex, levels = c(""))
+plot(practicedata$sex)
+# did not work at all
 
 
+rm(surveys)
+rm(surveys_sml)
+rm(surveys2)
+rm(sex)
+rm(my_date)
 
-
-
-
-
-
-
-
-
-
-
-
-
+# STUCK

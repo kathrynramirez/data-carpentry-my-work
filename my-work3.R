@@ -227,27 +227,6 @@ par("mar")
 par(mar=c(1,1,1,1))
 
 plot(as.factor(practicedata$sex))
-# why isn't graph labeled??? bars are in correct length 
-
-plot(practicedata$sex)
-#Error in plot.window(...) : need finite 'ylim' values
-#In addition: Warning messages:
-#  1: In xy.coords(x, y, xlabel, ylabel, log) : NAs introduced by coercion
-#  2: In min(x) : no non-missing arguments to min; returning Inf
-#  3: In max(x) : no non-missing arguments to max; returning -Inf
-
-practicedata$sex <- factor(practicedata$sex)
-
-levels(practicedata$sex)
-practicedata$sex <- factor(practicedata$sex, levels = c(""))
-plot(practicedata$sex)
-# did not work at all
+# worked since sex was renamed as a factor and not a character
 
 
-rm(surveys)
-rm(surveys_sml)
-rm(surveys2)
-rm(sex)
-rm(my_date)
-
-# STUCK

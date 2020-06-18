@@ -226,7 +226,122 @@ par("mar")
 # [1] 5.1 4.1 4.1 2.1
 par(mar=c(1,1,1,1))
 
+# bar plot of the number of females and males captured during the experiment:  
 plot(as.factor(practicedata$sex))
 # worked since sex was renamed as a factor and not a character
+
+sex <- factor(practicedata$sex)
+head(sex)
+# [1] M M        
+# Levels:  F M
+levels(sex)
+# [1] ""  "F" "M"
+levels(sex)[1] <- "undetermined"
+levels(sex)
+# [1] "undetermined" "F"            "M"
+head(sex)
+# [1] M            M            undetermined undetermined
+# [5] undetermined undetermined
+# Levels: undetermined F M
+
+
+#challenge: Rename “F” and “M” to “female” and “male” respectively.
+#Now that we have renamed the factor level to “undetermined”, 
+#can you recreate the barplot such that “undetermined” is last (after “male”)?
+
+levels(sex)[2:3] <- c("female", "male")
+sex <- factor(sex, levels = c("female", "male", "undetermined"))
+# attempted and did not get a plot 
+par("mar")
+par(mar=c(1,1,1,1))
+plot(sex)
+# plot does not match desired plot
+levels(sex)
+str(sex)
+# COME BACK HERE: FIND OUT WHY PLOT LOOKS LIKE THAT
+
+#===========================================================================#
+
+# stringsAsFactors=FALSE
+
+# In most cases, it is preferable to set stringsAsFactors = FALSE 
+# when importing data and to convert as a factor only the columns that 
+# require this data type.
+
+# compare the difference between our data read as 'factor' vs 'character'
+practicedata <- read.csv("data_raw/portal_data_joined.csv", stringsAsFactors = FALSE)
+str(practicedata)
+# 'data.frame':	34786 obs. of  13 variables:
+#  $ record_id      : int  1 72 224 266 349 363 435 506 588 661 ...
+# $ month          : int  7 8 9 10 11 11 12 1 2 3 ...
+# $ day            : int  16 19 13 16 12 12 10 8 18 11 ...
+# $ year           : int  1977 1977 1977 1977 1977 1977 1977 1978 1978 1978 ...
+# $ plot_id        : int  2 2 2 2 2 2 2 2 2 2 ...
+# $ species_id     : chr  "NL" "NL" "NL" "NL" ...
+# $ sex            : chr  "M" "M" "" "" ...
+# $ hindfoot_length: int  32 31 NA NA NA NA NA NA NA NA ...
+# $ weight         : int  NA NA NA NA NA NA NA NA 218 NA ...
+# $ genus          : chr  "Neotoma" "Neotoma" "Neotoma" "Neotoma" ...
+# $ species        : chr  "albigula" "albigula" "albigula" "albigula" ...
+# $ taxa           : chr  "Rodent" "Rodent" "Rodent" "Rodent" ...
+# $ plot_type      : chr  "Control" "Control" "Control" "Control" ...
+
+practicedata <- read.csv("data_raw/portal_data_joined.csv", stringsAsFactors = TRUE)
+str(practicedata)
+# 'data.frame':	34786 obs. of  13 variables:
+#  $ record_id      : int  1 72 224 266 349 363 435 506 588 661 ...
+# $ month          : int  7 8 9 10 11 11 12 1 2 3 ...
+# $ day            : int  16 19 13 16 12 12 10 8 18 11 ...
+# $ year           : int  1977 1977 1977 1977 1977 1977 1977 1978 1978 1978 ...
+# $ plot_id        : int  2 2 2 2 2 2 2 2 2 2 ...
+# $ species_id     : Factor w/ 48 levels "AB","AH","AS",..: 16 16 16 16 16 16 16 16 16 16 ...
+# $ sex            : Factor w/ 3 levels "","F","M": 3 3 1 1 1 1 1 1 3 1 ...
+# $ hindfoot_length: int  32 31 NA NA NA NA NA NA NA NA ...
+# $ weight         : int  NA NA NA NA NA NA NA NA 218 NA ...
+# $ genus          : Factor w/ 26 levels "Ammodramus","Ammospermophilus",..: 13 13 13 13 13 13 13 13 13 13 ...
+# $ species        : Factor w/ 40 levels "albigula","audubonii",..: 1 1 1 1 1 1 1 1 1 1 ...
+# $ taxa           : Factor w/ 4 levels "Bird","Rabbit",..: 4 4 4 4 4 4 4 4 4 4 ...
+# $ plot_type      : Factor w/ 5 levels "Control","Long-term Krat Exclosure",..: 1 1 1 1 1 1 1 1 1 1 ...
+
+# all characters turned into factors 
+
+# convert the column 'plot_type" into a factor
+practicedata$plot_type <- factor(practicedata$plot_type)
+
+# challenge: We have seen how data frames are created when using read.csv(),
+# but they can also be created by hand with the data.frame() function.
+# There are a few mistakes in this hand-crafted data.frame. 
+# Can you spot and fix them? Don’t hesitate to experiment!
+
+# animal_data <- data.frame(
+#  animal = c(dog, cat, sea cucumber, sea urchin),
+#  feel = c("furry", "squishy", "spiny"),
+#  weight = c(45, 8 1.1, 0.8)
+#)
+
+animal_data <- data.frame(animal = c("dog", "cat", "seacucumber", "seaurchin"),feel = c("furry","furry", "squishy", "spiny"), weight = c(45, 8, 1.1, 0.8))
+
+# Can you predict the class for each of the columns in the following example? 
+# Check your guesses using str(country_climate):
+#   Are they what you expected? Why? Why not?
+#  What would have been different if we had added stringsAsFactors = FALSE 
+#   when creating the data frame?
+#  What would you need to change to ensure that each column had the accurate 
+#   data type?
+
+# country_climate <- data.frame(
+#  country = c("Canada", "Panama", "South Africa", "Australia"),
+#  climate = c("cold", "hot", "temperate", "hot/temperate"),
+#  temperature = c(10, 30, 18, "15"),
+#  northern_hemisphere = c(TRUE, TRUE, FALSE, "FALSE"),
+#  has_kangaroo = c(FALSE, FALSE, FALSE, 1)
+#)
+
+country_climate <- data.frame(country = c("Canada", "Panama", "South Africa", "Australia"), climate = c("cold", "hot", "temperate", "hot/temperate"), temperature = c(10, 30, 18, 15), northern_hemisphere = c(TRUE, TRUE, FALSE, FALSE),has_kangaroo = c(FALSE, FALSE, FALSE, TRUE))
+
+
+
+  
+
 
 

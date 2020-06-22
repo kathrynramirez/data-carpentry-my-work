@@ -562,15 +562,137 @@ head(missing_dates)
 # 3820 2000     4  31
 # 3856 2000     9  31
 
+#===========================================================================#
 
+# Manipulating and analyzing data with dplyr
 
+# load the tidyverse packages, incl. dplyr
+library("tidyverse")
 
+practicedata <- read_csv("data_raw/portal_data_joined.csv")
+# Parsed with column specification:
+#  cols(
+#    record_id = col_double(),
+#    month = col_double(),
+#    day = col_double(),
+#    year = col_double(),
+#    plot_id = col_double(),
+#    species_id = col_character(),
+#    sex = col_character(),
+#    hindfoot_length = col_double(),
+#    weight = col_double(),
+#    genus = col_character(),
+#    species = col_character(),
+#    taxa = col_character(),
+#    plot_type = col_character()
+#  )
 
+# You will see the message Parsed with column specification, followed by each column name and 
+# its data type. When you execute read_csv on a data file, it looks through the first 1000 rows 
+# of each column and guesses the data type for each column as it reads it into R. For example, 
+# in this dataset, read_csv reads weight as col_double (a numeric data type), and species as col_character.
+# You have the option to specify the data type for a column manually by using the col_types argument in read_csv.
 
+# inspect the data
+# str(practicedata)'
 
+# tibble [34,786 × 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+#  $ record_id      : num [1:34786] 1 72 224 266 349 363 435 506 588 661 ...
+#  $ month          : num [1:34786] 7 8 9 10 11 11 12 1 2 3 ...
+#  $ day            : num [1:34786] 16 19 13 16 12 12 10 8 18 11 ...
+#  $ year           : num [1:34786] 1977 1977 1977 1977 1977 ...
+#  $ plot_id        : num [1:34786] 2 2 2 2 2 2 2 2 2 2 ...
+#  $ species_id     : chr [1:34786] "NL" "NL" "NL" "NL" ...
+#  $ sex            : chr [1:34786] "M" "M" NA NA ...
+#  $ hindfoot_length: num [1:34786] 32 31 NA NA NA NA NA NA NA NA ...
+#  $ weight         : num [1:34786] NA NA NA NA NA NA NA NA 218 NA ...
+#  $ genus          : chr [1:34786] "Neotoma" "Neotoma" "Neotoma" "Neotoma" ...
+#  $ species        : chr [1:34786] "albigula" "albigula" "albigula" "albigula" ...
+#  $ taxa           : chr [1:34786] "Rodent" "Rodent" "Rodent" "Rodent" ...
+#  $ plot_type      : chr [1:34786] "Control" "Control" "Control" "Control" ...
+#  - attr(*, "spec")=
+#   .. cols(
+#   ..   record_id = col_double(),
+#   ..   month = col_double(),
+#   ..   day = col_double(),
+#   ..   year = col_double(),
+#   ..   plot_id = col_double(),
+#   ..   species_id = col_character(),
+#   ..   sex = col_character(),
+#   ..   hindfoot_length = col_double(),
+#   ..   weight = col_double(),
+#   ..   genus = col_character(),
+#   ..   species = col_character(),
+#   ..   taxa = col_character(),
+#   ..   plot_type = col_character()
+#   .. )
 
+# preview the data
+view(practicedata)
 
+# Notice that the class of the data is now tbl_df
 
+# This is referred to as a “tibble”. 
+# Tibbles tweak some of the behaviors of the data frame objects we introduced in the previous episode. 
+# The data structure is very similar to a data frame. For our purposes the only differences are that:
+  
+# In addition to displaying the data type of each column under its name, 
+#  it only prints the first few rows of data and only as many columns as fit on one screen.
+#  Columns of class character are never converted into factors.
+
+# dplyr
+select(practicedata, plot_id, species_id, weight)
+# A tibble: 34,786 x 3
+# plot_id species_id weight
+# <dbl> <chr>       <dbl>
+#   1       2 NL             NA
+#   2       2 NL             NA
+#   3       2 NL             NA
+#   4       2 NL             NA
+#   5       2 NL             NA
+#   6       2 NL             NA
+#   7       2 NL             NA
+#   8       2 NL             NA
+#   9       2 NL            218
+#  10       2 NL             NA
+# … with 34,776 more rows
+
+# To select all columns except certain ones, put a “-” in front of the variable to exclude it.
+
+select(practicedata, -record_id, -species_id)
+# A tibble: 34,786 x 11
+#  month   day  year plot_id sex   hindfoot_length weight genus   species  taxa   plot_type
+#  <dbl> <dbl> <dbl>   <dbl> <chr>           <dbl>  <dbl> <chr>   <chr>    <chr>  <chr>    
+#   1     7    16  1977       2 M                  32     NA Neotoma albigula Rodent Control  
+#   2     8    19  1977       2 M                  31     NA Neotoma albigula Rodent Control  
+#   3     9    13  1977       2 NA                 NA     NA Neotoma albigula Rodent Control  
+#   4    10    16  1977       2 NA                 NA     NA Neotoma albigula Rodent Control  
+#   5    11    12  1977       2 NA                 NA     NA Neotoma albigula Rodent Control  
+#   6    11    12  1977       2 NA                 NA     NA Neotoma albigula Rodent Control  
+#   7    12    10  1977       2 NA                 NA     NA Neotoma albigula Rodent Control  
+#   8     1     8  1978       2 NA                 NA     NA Neotoma albigula Rodent Control  
+#   9     2    18  1978       2 M                  NA    218 Neotoma albigula Rodent Control  
+#  10     3    11  1978       2 NA                 NA     NA Neotoma albigula Rodent Control  
+# … with 34,776 more rows
+
+# This will select all the variables in surveys except record_id and species_id.
+
+# To choose rows based on a specific criterion, use filter():
+filter(practicedata, year == 1995)
+# A tibble: 1,180 x 13
+# record_id month   day  year plot_id species_id sex   hindfoot_length weight genus     species  taxa   plot_type
+# <dbl> <dbl> <dbl> <dbl>   <dbl> <chr>      <chr>           <dbl>  <dbl> <chr>     <chr>    <chr>  <chr>    
+#  1     22314     6     7  1995       2 NL         M                  34     NA Neotoma   albigula Rodent Control  
+#  2     22728     9    23  1995       2 NL         F                  32    165 Neotoma   albigula Rodent Control  
+#  3     22899    10    28  1995       2 NL         F                  32    171 Neotoma   albigula Rodent Control  
+#  4     23032    12     2  1995       2 NL         F                  33     NA Neotoma   albigula Rodent Control  
+#  5     22003     1    11  1995       2 DM         M                  37     41 Dipodomys merriami Rodent Control  
+#  6     22042     2     4  1995       2 DM         F                  36     45 Dipodomys merriami Rodent Control  
+#  7     22044     2     4  1995       2 DM         M                  37     46 Dipodomys merriami Rodent Control  
+#  8     22105     3     4  1995       2 DM         F                  37     49 Dipodomys merriami Rodent Control  
+#  9     22109     3     4  1995       2 DM         M                  37     46 Dipodomys merriami Rodent Control  
+# 10     22168     4     1  1995       2 DM         M                  36     48 Dipodomys merriami Rodent Control  
+# … with 1,170 more rows
 
 
 

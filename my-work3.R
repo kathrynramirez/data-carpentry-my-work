@@ -694,7 +694,721 @@ filter(practicedata, year == 1995)
 # 10     22168     4     1  1995       2 DM         M                  36     48 Dipodomys merriami Rodent Control  
 # … with 1,170 more rows
 
+practicedata2 <- filter(practicedata, weight < 5)
+practicedata_sml <- select(practicedata2, species_id, sex, weight)
 
+practicedata_sml <- select(filter(practicedata, weight < 5), species_id, sex, weight)
+
+practicedata %>% 
+  filter(weight < 5) %>% 
+  select(species_id, sex, weight)
+# A tibble: 17 x 3
+# species_id sex   weight
+# <chr>      <chr>  <dbl>
+# 1 PF         F          4
+# 2 PF         F          4
+# 3 PF         M          4
+# 4 RM         F          4
+# 5 RM         M          4
+# 6 PF         NA         4
+# 7 PP         M          4
+# 8 RM         M          4
+# 9 RM         M          4
+# 10 RM         M          4
+# 11 PF         M          4
+# 12 PF         F          4
+# 13 RM         M          4
+# 14 RM         M          4
+# 15 RM         F          4
+# 16 RM         M          4
+# 17 RM         M          4
+
+practicedata_sml <- practicedata %>%
+  filter(weight < 5) %>%
+  select(species_id, sex, weight)
+practicedata_sml
+# A tibble: 17 x 3
+# species_id sex   weight
+# <chr>      <chr>  <dbl>
+# 1 PF         F          4
+# 2 PF         F          4
+# 3 PF         M          4
+# 4 RM         F          4
+# 5 RM         M          4
+# 6 PF         NA         4
+# 7 PP         M          4
+# 8 RM         M          4
+# 9 RM         M          4
+# 10 RM         M          4
+# 11 PF         M          4
+# 12 PF         F          4
+# 13 RM         M          4
+# 14 RM         M          4
+# 15 RM         F          4
+# 16 RM         M          4
+# 17 RM         M          4
+
+practicedata %>%
+  filter(year < 1995) %>%
+  select(year, sex, weight)
+# A tibble: 21,486 x 3
+# year sex   weight
+# <dbl> <chr>  <dbl>
+# 1  1977 M         NA
+# 2  1977 M         NA
+# 3  1977 NA        NA
+# 4  1977 NA        NA
+# 5  1977 NA        NA
+# 6  1977 NA        NA
+# 7  1977 NA        NA
+# 8  1978 NA        NA
+# 9  1978 M        218
+# 10  1978 NA        NA
+# … with 21,476 more rows
+
+
+practicedata %>%
+  mutate(weight_kg = weight / 1000)
+# A tibble: 34,786 x 14
+# record_id month   day  year plot_id species_id sex   hindfoot_length weight
+# <dbl> <dbl> <dbl> <dbl>   <dbl> <chr>      <chr>           <dbl>  <dbl>
+# 1         1     7    16  1977       2 NL         M                  32     NA
+# 2        72     8    19  1977       2 NL         M                  31     NA
+# 3       224     9    13  1977       2 NL         NA                 NA     NA
+# 4       266    10    16  1977       2 NL         NA                 NA     NA
+# 5       349    11    12  1977       2 NL         NA                 NA     NA
+# 6       363    11    12  1977       2 NL         NA                 NA     NA
+# 7       435    12    10  1977       2 NL         NA                 NA     NA
+# 8       506     1     8  1978       2 NL         NA                 NA     NA
+# 9       588     2    18  1978       2 NL         M                  NA    218
+# 10       661     3    11  1978       2 NL         NA                 NA     NA
+# … with 34,776 more rows, and 5 more variables: genus <chr>, species <chr>,
+#   taxa <chr>, plot_type <chr>, weight_kg <dbl>
+
+practicedata %>%
+  mutate(weight_kg = weight / 1000,
+         weight_lb = weight_kg * 2.2)
+# A tibble: 34,786 x 15
+# record_id month   day  year plot_id species_id sex   hindfoot_length weight
+# <dbl> <dbl> <dbl> <dbl>   <dbl> <chr>      <chr>           <dbl>  <dbl>
+# 1         1     7    16  1977       2 NL         M                  32     NA
+# 2        72     8    19  1977       2 NL         M                  31     NA
+# 3       224     9    13  1977       2 NL         NA                 NA     NA
+# 4       266    10    16  1977       2 NL         NA                 NA     NA
+# 5       349    11    12  1977       2 NL         NA                 NA     NA
+# 6       363    11    12  1977       2 NL         NA                 NA     NA
+# 7       435    12    10  1977       2 NL         NA                 NA     NA
+# 8       506     1     8  1978       2 NL         NA                 NA     NA
+# 9       588     2    18  1978       2 NL         M                  NA    218
+# 10       661     3    11  1978       2 NL         NA                 NA     NA
+# … with 34,776 more rows, and 6 more variables: genus <chr>, species <chr>,
+#   taxa <chr>, plot_type <chr>, weight_kg <dbl>, weight_lb <dbl>
+
+practicedata %>%
+  mutate(weight_kg = weight / 1000) %>%
+  head()
+# A tibble: 6 x 14
+# record_id month   day  year plot_id species_id sex   hindfoot_length weight
+# <dbl> <dbl> <dbl> <dbl>   <dbl> <chr>      <chr>           <dbl>  <dbl>
+# 1         1     7    16  1977       2 NL         M                  32     NA
+# 2        72     8    19  1977       2 NL         M                  31     NA
+# 3       224     9    13  1977       2 NL         NA                 NA     NA
+# 4       266    10    16  1977       2 NL         NA                 NA     NA
+# 5       349    11    12  1977       2 NL         NA                 NA     NA
+# 6       363    11    12  1977       2 NL         NA                 NA     NA
+# … with 5 more variables: genus <chr>, species <chr>, taxa <chr>,
+#   plot_type <chr>, weight_kg <dbl>
+
+practicedata %>%
+  filter(!is.na(weight)) %>%
+  mutate(weight_kg = weight / 1000) %>%
+  head()
+# A tibble: 6 x 14
+# record_id month   day  year plot_id species_id sex   hindfoot_length weight
+# <dbl> <dbl> <dbl> <dbl>   <dbl> <chr>      <chr>           <dbl>  <dbl>
+# 1       588     2    18  1978       2 NL         M                  NA    218
+# 2       845     5     6  1978       2 NL         M                  32    204
+# 3       990     6     9  1978       2 NL         M                  NA    200
+# 4      1164     8     5  1978       2 NL         M                  34    199
+# 5      1261     9     4  1978       2 NL         M                  32    197
+# 6      1453    11     5  1978       2 NL         M                  NA    218
+# … with 5 more variables: genus <chr>, species <chr>, taxa <chr>,
+#   plot_type <chr>, weight_kg <dbl>
+
+practicedata_hindfoot_cm <- practicedata %>%
+  filter(!is.na(hindfoot_length)) %>%
+  mutate(hindfoot_cm = hindfoot_length / 10) %>%
+  filter(hindfoot_cm < 3) %>%
+  select(species_id, hindfoot_cm)
+
+practicedata %>%
+  group_by(sex) %>%
+  summarize(mean_weight = mean(weight, na.rm = TRUE))
+# `summarise()` ungrouping output (override with `.groups` argument)
+# A tibble: 3 x 2
+# sex   mean_weight
+# <chr>       <dbl>
+# 1 F            42.2
+# 2 M            43.0
+# 3 NA           64.7
+
+practicedata %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight, na.rm = TRUE)) %>% 
+  tail()
+# `summarise()` regrouping output by 'sex' (override with `.groups` argument)
+# A tibble: 6 x 3
+# Groups:   sex [1]
+# sex   species_id mean_weight
+# <chr> <chr>            <dbl>
+# 1 NA    SU                 NaN
+# 2 NA    UL                 NaN
+# 3 NA    UP                 NaN
+# 4 NA    UR                 NaN
+# 5 NA    US                 NaN
+# 6 NA    ZL                 NaN
+
+practicedata %>%
+  filter(!is.na(weight)) %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight))
+# `summarise()` regrouping output by 'sex' (override with `.groups` argument)
+# A tibble: 64 x 3
+# Groups:   sex [3]
+# sex   species_id mean_weight
+# <chr> <chr>            <dbl>
+# 1 F     BA                9.16
+# 2 F     DM               41.6 
+# 3 F     DO               48.5 
+# 4 F     DS              118.  
+# 5 F     NL              154.  
+# 6 F     OL               31.1 
+# 7 F     OT               24.8 
+# 8 F     OX               21   
+# 9 F     PB               30.2 
+# 10 F     PE               22.8 
+# … with 54 more rows
+
+practicedata %>%
+  filter(!is.na(weight)) %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight)) %>%
+  print(n = 15)
+# A tibble: 64 x 3
+# Groups:   sex [3]
+# sex   species_id mean_weight
+# <chr> <chr>            <dbl>
+# 1 F     BA                9.16
+# 2 F     DM               41.6 
+# 3 F     DO               48.5 
+# 4 F     DS              118.  
+# 5 F     NL              154.  
+# 6 F     OL               31.1 
+# 7 F     OT               24.8 
+# 8 F     OX               21   
+# 9 F     PB               30.2 
+# 10 F     PE               22.8 
+# 11 F     PF                7.97
+# 12 F     PH               30.8 
+# 13 F     PL               19.3 
+# 14 F     PM               22.1 
+# 15 F     PP               17.2 
+# … with 49 more rows
+
+practicedata %>%
+  filter(!is.na(weight)) %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight),
+            min_weight = min(weight))
+# `summarise()` regrouping output by 'sex' (override with `.groups` argument)
+# A tibble: 64 x 4
+# Groups:   sex [3]
+# sex   species_id mean_weight min_weight
+# <chr> <chr>            <dbl>      <dbl>
+# 1 F     BA                9.16          6
+# 2 F     DM               41.6          10
+# 3 F     DO               48.5          12
+# 4 F     DS              118.           45
+# 5 F     NL              154.           32
+# 6 F     OL               31.1          10
+# 7 F     OT               24.8           5
+# 8 F     OX               21            20
+# 9 F     PB               30.2          12
+# 10 F     PE               22.8          11
+# … with 54 more rows
+
+practicedata %>%
+  filter(!is.na(weight)) %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight),
+            min_weight = min(weight)) %>%
+  arrange(min_weight)
+# `summarise()` regrouping output by 'sex' (override with `.groups` argument)
+# A tibble: 64 x 4
+# Groups:   sex [3]
+# sex   species_id mean_weight min_weight
+# <chr> <chr>            <dbl>      <dbl>
+# 1 F     PF                7.97          4
+# 2 F     RM               11.1           4
+# 3 M     PF                7.89          4
+# 4 M     PP               17.2           4
+# 5 M     RM               10.1           4
+# 6 NA    PF                6             4
+# 7 F     OT               24.8           5
+# 8 F     PP               17.2           5
+# 9 F     BA                9.16          6
+# 10 M     BA                7.36          6
+# … with 54 more rows
+
+practicedata %>%
+  filter(!is.na(weight)) %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight),
+            min_weight = min(weight)) %>%
+  arrange(desc(mean_weight))
+# `summarise()` regrouping output by 'sex' (override with `.groups` argument)
+# A tibble: 64 x 4
+# Groups:   sex [3]
+# sex   species_id mean_weight min_weight
+# <chr> <chr>            <dbl>      <dbl>
+# 1 NA    NL               168.          83
+# 2 M     NL               166.          30
+# 3 F     NL               154.          32
+# 4 M     SS               130          130
+# 5 NA    SH               130          130
+# 6 M     DS               122.          12
+# 7 NA    DS               120           78
+# 8 F     DS               118.          45
+# 9 F     SH                78.8         30
+# 10 F     SF                69           46
+
+practicedata %>%
+  count(sex) 
+# sex     n
+# 1      1748
+# 2   F 15690
+# 3   M 17348
+
+practicedata %>%
+  group_by(sex) %>%
+  summarise(count = n())
+# `summarise()` ungrouping output (override with `.groups` argument)
+# A tibble: 3 x 2
+# sex   count
+# <fct> <int>
+# 1 ""     1748
+# 2 "F"   15690
+# 3 "M"   17348
+
+practicedata %>%
+  count(sex, sort = TRUE) 
+# sex     n
+# 1   M 17348
+# 2   F 15690
+# 3      1748
+
+practicedata %>%
+  count(sex, species) 
+
+practicedata %>%
+  count(sex, species) %>%
+  arrange(species, desc(n))
+
+practicedata %>%
+  count(plot_type) 
+# plot_type     n
+# 1                   Control 15611
+# 2  Long-term Krat Exclosure  5118
+# 3          Rodent Exclosure  4233
+# 4 Short-term Krat Exclosure  5906
+# 5         Spectab exclosure  3918
+
+practicedata %>%
+  filter(!is.na(hindfoot_length)) %>%
+  group_by(species_id) %>%
+  summarize(
+    mean_hindfoot_length = mean(hindfoot_length),
+    min_hindfoot_length = min(hindfoot_length),
+    max_hindfoot_length = max(hindfoot_length),
+    n = n()
+  )
+# `summarise()` ungrouping output (override with `.groups` argument)
+# A tibble: 25 x 5
+# species_id mean_hindfoot_length min_hindfoot_length max_hindfoot_length     n
+# <fct>                     <dbl>               <int>               <int> <int>
+# 1 AH                         33                    31                  35     2
+# 2 BA                         13                     6                  16    45
+# 3 DM                         36.0                  16                  50  9972
+# 4 DO                         35.6                  26                  64  2887
+# 5 DS                         49.9                  39                  58  2132
+# 6 NL                         32.3                  21                  70  1074
+# 7 OL                         20.5                  12                  39   920
+# 8 OT                         20.3                  13                  50  2139
+# 9 OX                         19.1                  13                  21     8
+# 10 PB                         26.1                   2                  47  2864
+# … with 15 more rows
+
+practicedata %>%
+  filter(!is.na(weight)) %>%
+  group_by(year) %>%
+  filter(weight == max(weight)) %>%
+  select(year, genus, species, weight) %>%
+  arrange(year)
+# A tibble: 27 x 4
+# Groups:   year [26]
+# year genus     species     weight
+# <int> <fct>     <fct>        <int>
+# 1  1977 Dipodomys spectabilis    149
+# 2  1978 Neotoma   albigula       232
+# 3  1978 Neotoma   albigula       232
+# 4  1979 Neotoma   albigula       274
+# 5  1980 Neotoma   albigula       243
+# 6  1981 Neotoma   albigula       264
+# 7  1982 Neotoma   albigula       252
+# 8  1983 Neotoma   albigula       256
+# 9  1984 Neotoma   albigula       259
+# 10  1985 Neotoma   albigula       225
+# … with 17 more rows
+
+practicedata_gw <- practicedata %>%
+  filter(!is.na(weight)) %>%
+  group_by(plot_id, genus) %>%
+  summarize(mean_weight = mean(weight))
+#`summarise()` regrouping output by 'plot_id' (override with `.groups` argument)
+
+str(practicedata_gw)
+
+
+practicedata_spread <- practicedata_gw %>%
+  spread(key = genus, value = mean_weight)
+
+str(practicedata_spread)
+
+
+practicedata_gw %>%
+  spread(genus, mean_weight, fill = 0) %>%
+  head()
+# A tibble: 6 x 11
+# Groups:   plot_id [6]
+# plot_id Baiomys Chaetodipus Dipodomys Neotoma Onychomys Perognathus Peromyscus
+# <int>   <dbl>       <dbl>     <dbl>   <dbl>     <dbl>       <dbl>      <dbl>
+# 1       1    7           22.2      60.2    156.      27.7        9.62       22.2
+# 2       2    6           25.1      55.7    169.      26.9        6.95       22.3
+# 3       3    8.61        24.6      52.0    158.      26.0        7.51       21.4
+# 4       4    0           23.0      57.5    164.      28.1        7.82       22.6
+# 5       5    7.75        18.0      51.1    190.      27.0        8.66       21.2
+# 6       6    0           24.9      58.6    180.      25.9        7.81       21.8
+# … with 3 more variables: Reithrodontomys <dbl>, Sigmodon <dbl>,
+#   Spermophilus <dbl>
+
+practicedata_gather <- practicedata_spread %>%
+  gather(key = "genus", value = "mean_weight", -plot_id)
+
+str(practicedata_gather)
+
+practicedata_spread %>%
+  gather(key = "genus", value = "mean_weight", Baiomys:Spermophilus) %>%
+  head()
+# A tibble: 6 x 3
+# Groups:   plot_id [6]
+# plot_id genus   mean_weight
+# <int> <chr>         <dbl>
+# 1       1 Baiomys        7   
+# 2       2 Baiomys        6   
+# 3       3 Baiomys        8.61
+# 4       4 Baiomys       NA   
+# 5       5 Baiomys        7.75
+# 6       6 Baiomys       NA   
+
+practicedata_spread_genera <- practicedata %>%
+  group_by(plot_id, year) %>%
+  summarize(n_genera = n_distinct(genus)) %>%
+  spread(year, n_genera)
+# `summarise()` regrouping output by 'plot_id' (override with `.groups` argument)
+
+head(practicedata_spread_genera)
+# A tibble: 6 x 27
+# Groups:   plot_id [6]
+# plot_id `1977` `1978` `1979` `1980` `1981` `1982` `1983` `1984` `1985` `1986`
+# <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>
+# 1       1      2      3      4      7      5      6      7      6      4      3
+# 2       2      6      6      6      8      5      9      9      9      6      4
+# 3       3      5      6      4      6      6      8     10     11      7      6
+# 4       4      4      4      3      4      5      4      6      3      4      3
+# 5       5      4      3      2      5      4      6      7      7      3      1
+# 6       6      3      4      3      4      5      9      9      7      5      6
+# … with 16 more variables: `1987` <int>, `1988` <int>, `1989` <int>,
+#   `1990` <int>, `1991` <int>, `1992` <int>, `1993` <int>, `1994` <int>,
+#   `1995` <int>, `1996` <int>, `1997` <int>, `1998` <int>,
+
+practicedata_spread_genera %>%
+  gather("year", "n_genera", -plot_id)
+# A tibble: 624 x 3
+# Groups:   plot_id [24]
+# plot_id year  n_genera
+# <int> <chr>    <int>
+# 1       1 1977         2
+# 2       2 1977         6
+# 3       3 1977         5
+# 4       4 1977         4
+# 5       5 1977         4
+# 6       6 1977         3
+# 7       7 1977         3
+# 8       8 1977         2
+# 9       9 1977         3
+# 10      10 1977         1
+# … with 614 more rows
+
+practicedata_long <- practicedata %>%
+  gather("measurement", "value", hindfoot_length, weight)
+
+practicedata_long %>%
+  group_by(year, measurement, plot_type) %>%
+  summarize(mean_value = mean(value, na.rm=TRUE)) %>%
+  spread(measurement, mean_value)
+`summarise()` regrouping output by 'year', 'measurement' (override with `.groups` argument)
+# A tibble: 130 x 4
+# Groups:   year [26]
+# year plot_type                 hindfoot_length weight
+# <int> <fct>                               <dbl>  <dbl>
+# 1  1977 Control                              36.1   50.4
+# 2  1977 Long-term Krat Exclosure             33.7   34.8
+# 3  1977 Rodent Exclosure                     39.1   48.2
+# 4  1977 Short-term Krat Exclosure            35.8   41.3
+# 5  1977 Spectab exclosure                    37.2   47.1
+# 6  1978 Control                              38.1   70.8
+# 7  1978 Long-term Krat Exclosure             22.6   35.9
+# 8  1978 Rodent Exclosure                     37.8   67.3
+# 9  1978 Short-term Krat Exclosure            36.9   63.8
+# 10  1978 Spectab exclosure                    42.3   80.1
+# … with 120 more rows
+
+practicedata_complete <- practicedata %>%
+  filter(!is.na(weight),           # remove missing weight
+         !is.na(hindfoot_length),  # remove missing hindfoot_length
+         !is.na(sex))                # remove missing sex
+
+## Extract the most common species_id
+species_counts <- practicedata_complete %>%
+  count(species_id) %>% 
+  filter(n >= 50)
+
+## Only keep the most common species
+practicedata_complete <- practicedata_complete %>%
+  filter(species_id %in% species_counts$species_id)
+
+write_csv(practicedata_complete, path = "data/practicedata_complete.csv")
+
+
+
+library("tidyverse")
+
+practicedata_complete <- read_csv("data/practicedata_complete.csv")
+# Parsed with column specification:
+# cols(
+#     record_id = col_double(),
+#     month = col_double(),
+#     day = col_double(),
+#     year = col_double(),
+#     plot_id = col_double(),
+#     species_id = col_character(),
+#     sex = col_character(),
+#     hindfoot_length = col_double(),
+#     weight = col_double(),
+#     genus = col_character(),
+#     species = col_character(),
+#     taxa = col_character(),
+#     plot_type = col_character()
+#      )
+
+ggplot(data = practicedata_complete)
+
+ggplot(data = practicedata_complete, mapping = aes(x = weight, y = hindfoot_length))
+
+ggplot(data = practicedata_complete, aes(x = weight, y = hindfoot_length)) +
+  geom_point()
+
+# Assign plot to a variable
+practicedata_plot <- ggplot(data = practicedata_complete, 
+                       mapping = aes(x = weight, y = hindfoot_length))
+
+# Draw the plot
+practicedata_plot + 
+  geom_point()
+
+# This is the correct syntax for adding layers
+practicedata_plot +
+  geom_point()
+
+# This will not add the new layer and will return an error message
+practicedata_plot
++ geom_point()
+
+ggplot(data = practicedata_complete, aes(x = weight, y = hindfoot_length)) +
+  geom_point()
+
+ggplot(data = practicedata_complete, aes(x = weight, y = hindfoot_length)) +
+  geom_point(alpha = 0.1)
+
+ggplot(data = practicedata_complete, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(alpha = 0.1, color = "blue")
+
+ggplot(data = practicedata_complete, mapping = aes(x = weight, y = hindfoot_length)) +
+  geom_point(alpha = 0.1, aes(color = species_id))
+
+ggplot(data = practicedata_complete, 
+       mapping = aes(x = species_id, y = weight)) +
+  geom_point(aes(color = plot_type))
+
+ggplot(data = practicedata_complete, mapping = aes(x = species_id, y = weight)) +
+  geom_boxplot()
+
+ggplot(data = practicedata_complete, mapping = aes(x = species_id, y = weight)) +
+  geom_boxplot(alpha = 0) +
+  geom_jitter(alpha = 0.3, color = "tomato")
+
+yearly_counts <- practicedata_complete %>%
+  count(year, genus)
+
+ggplot(data = yearly_counts, aes(x = year, y = n)) +
+  geom_line()
+
+ggplot(data = yearly_counts, aes(x = year, y = n, group = genus)) +
+  geom_line()
+
+ggplot(data = yearly_counts, aes(x = year, y = n, color = genus)) +
+  geom_line()
+
+yearly_counts %>% 
+  ggplot(mapping = aes(x = year, y = n, color = genus)) +
+  geom_line()
+
+yearly_counts_graph <- practicedata_complete %>%
+  count(year, genus) %>% 
+  ggplot(mapping = aes(x = year, y = n, color = genus)) +
+  geom_line()
+
+yearly_counts_graph
+
+ggplot(data = yearly_counts, aes(x = year, y = n)) +
+  geom_line() +
+  facet_wrap(facets = vars(genus))
+
+yearly_sex_counts <- practicedata_complete %>%
+  count(year, genus, sex)
+
+ggplot(data = yearly_sex_counts, mapping = aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_wrap(facets =  vars(genus))
+
+ggplot(data = yearly_sex_counts, 
+       mapping = aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_grid(rows = vars(sex), cols =  vars(genus))
+
+# One column, facet by rows
+ggplot(data = yearly_sex_counts, 
+       mapping = aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_grid(rows = vars(genus))
+
+# One row, facet by column
+ggplot(data = yearly_sex_counts, 
+       mapping = aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_grid(cols = vars(genus))
+
+ggplot(data = yearly_sex_counts, 
+       mapping = aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_wrap(vars(genus)) +
+  theme_bw()
+
+yearly_weight <- practicedata_complete %>%
+  group_by(year, species_id) %>%
+  summarize(avg_weight = mean(weight))
+
+ggplot(data = yearly_weight, mapping = aes(x=year, y=avg_weight)) +
+  geom_line() +
+  facet_wrap(vars(species_id)) +
+  theme_bw()
+
+ggplot(data = yearly_sex_counts, aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_wrap(vars(genus)) +
+  labs(title = "Observed genera through time",
+       x = "Year of observation",
+       y = "Number of individuals") +
+  theme_bw()
+
+ggplot(data = yearly_sex_counts, mapping = aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_wrap(vars(genus)) +
+  labs(title = "Observed genera through time",
+       x = "Year of observation",
+       y = "Number of individuals") +
+  theme_bw() +
+  theme(text=element_text(size = 16))
+
+ggplot(data = yearly_sex_counts, mapping = aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_wrap(vars(genus)) +
+  labs(title = "Observed genera through time",
+       x = "Year of observation",
+       y = "Number of individuals") +
+  theme_bw() +
+  theme(axis.text.x = element_text(colour = "grey20", size = 12, angle = 90,
+                                   hjust = 0.5, vjust = 0.5),
+        axis.text.y = element_text(colour = "grey20", size = 12),
+        text = element_text(size = 16))
+
+grey_theme <- theme(axis.text.x = element_text(colour="grey20", size = 12, 
+                                               angle = 90, hjust = 0.5, 
+                                               vjust = 0.5),
+                    axis.text.y = element_text(colour = "grey20", size = 12),
+                    text=element_text(size = 16))
+
+ggplot(practicedata_complete, aes(x = species_id, y = hindfoot_length)) +
+  geom_boxplot() +
+  grey_theme
+
+
+library(gridExtra)
+
+spp_weight_boxplot <- ggplot(data = practicedata_complete, 
+                             aes(x = species_id, y = weight)) +
+  geom_boxplot() +
+  labs(x = "Species", 
+       y = expression(log[10](Weight))) +
+  scale_y_log10() + 
+  labs()
+
+spp_count_plot <- ggplot(data = yearly_counts, 
+                         aes(x = year, y = n, color = genus)) +
+  geom_line() + 
+  labs(x = "Year", y = "Abundance")
+
+#### grid.arrange(spp_weight_boxplot, spp_count_plot, ncol = 2, widths = c(4, 6))
+
+my_plot <- ggplot(data = yearly_sex_counts, 
+                  aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_wrap(vars(genus)) +
+  labs(title = "Observed genera through time",
+       x = "Year of observation",
+       y = "Number of individuals") +
+  theme_bw() +
+  theme(axis.text.x = element_text(colour = "grey20", size = 12, angle = 90,
+                                   hjust = 0.5, vjust = 0.5),
+        axis.text.y = element_text(colour = "grey20", size = 12),
+        text = element_text(size = 16))
+
+ggsave("name_of_file.png", my_plot, width = 15, height = 10)
+
+#### This also works for grid.arrange() plots
+combo_plot <- grid.arrange(spp_weight_boxplot, spp_count_plot, ncol = 2, 
+                           widths = c(4, 6))
+#### ggsave("combo_plot_abun_weight.png", combo_plot, width = 10, dpi = 300)
 
 
 
